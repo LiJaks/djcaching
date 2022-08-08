@@ -29,9 +29,16 @@ class ShopViewsTest(TestCase):
     def setUp(self):
         self.client.login(username='TestingUser', password='zc6-XU2-DTQ-Ae6')
 
-    def test_cash_balance_view(self):
+    def test_balance_and_item_detail_view(self):
         url = reverse('top_up_balance')
         data = {'balance': ['450']}
         response = self.client.post(url, data)
         user = User.objects.first()
         self.assertEqual(user.cash_balance, 450)
+
+        url = '/shop/item/1'
+        response = self.client.post(url)
+        user = User.objects.first()
+        self.assertEqual(user.purchases.all().count(), 1)
+        self.assertContains(response, 'Purchase completed')
+        self.assertEqual(float(user.cash_balance), 0)
