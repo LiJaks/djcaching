@@ -29,8 +29,9 @@ class ShopViewsTest(TestCase):
     def setUp(self):
         self.client.login(username='TestingUser', password='zc6-XU2-DTQ-Ae6')
 
-    # def test_cash_balance_view(self):
-    #     url = reverse('top_up_balance')
-    #     data = {'balance': ['450']}
-    #     response = self.client.post(url, data)
-    #     self.assertEqual(self.user.cash_balance, 450)
+    def test_cash_balance_view(self):
+        url = reverse('top_up_balance')
+        data = {'balance': ['450']}
+        response = self.client.post(url, data)
+        user = User.objects.first()
+        self.assertEqual(user.cash_balance, 450)
